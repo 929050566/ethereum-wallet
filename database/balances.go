@@ -2,6 +2,7 @@ package database
 
 import (
 	"errors"
+	"ethereum-wallet/database/utils"
 	"math/big"
 	"strings"
 	"time"
@@ -33,7 +34,7 @@ type BalancesView interface {
 type BalancesDB interface {
 	BalancesView
 
-	UpdateOrCreate([]TokenBalance) error
+	UpdateOrCreate([]utils.TokenBalance) error
 	StoreBalances([]Balances, uint64) error
 	UpdateBalances([]Balances, bool) error
 }
@@ -124,7 +125,7 @@ func (db *balancesDB) QueryWalletBalanceByTokenAndAddress(address, tokenAddress 
 	return &balanceEntry, nil
 }
 
-func (db *balancesDB) UpdateOrCreate(balanceList []TokenBalance) error {
+func (db *balancesDB) UpdateOrCreate(balanceList []utils.TokenBalance) error {
 	hotWalletBalances, err := db.QueryHotWalletBalances(big.NewInt(0))
 	if err != nil {
 		log.Error("query hot wallet balances err", "err", err)

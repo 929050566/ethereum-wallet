@@ -1,12 +1,11 @@
 package config
 
 import (
+	"ethereum-wallet/flags"
 	"time"
 
-	"github.com/urfave/cli/v2"
-
-	"github.com/929050566/eth-wallet/flags"
 	"github.com/ethereum/go-ethereum/log"
+	"github.com/urfave/cli/v2"
 )
 
 const (

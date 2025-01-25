@@ -2,6 +2,7 @@ package database
 
 import (
 	"context"
+	"ethereum-wallet/config"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -9,10 +10,6 @@ import (
 	"github.com/pkg/errors"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
-
-	"github.com/929050566/ethereum-wallet/config"
-	_ "github.com/929050566/ethereum-wallet/database/utils/serializers"
-	"github.com/929050566/ethereum-wallet/wallet/retry"
 )
 
 type DB struct {
@@ -43,15 +40,20 @@ func NewDB(ctx context.Context, dbConfig config.DBConfig) (*DB, error) {
 		SkipDefaultTransaction: true,
 		CreateBatchSize:        3_000,
 	}
+	//
+	//retryStrategy := &retry.ExponentialStrategy{Min: 1000, Max: 20_000, MaxJitter: 250}
+	//gorm, err := retry.Do[*gorm.DB](context.Background(), 10, retryStrategy, func() (*gorm.DB, error) {
+	//	gorm, err := gorm.Open(postgres.Open(dsn), &gormConfig)
+	//	if err != nil {
+	//		return nil, fmt.Errorf("failed to connect to database: %w", err)
+	//	}
+	//	return gorm, nil
+	//})
 
-	retryStrategy := &retry.ExponentialStrategy{Min: 1000, Max: 20_000, MaxJitter: 250}
-	gorm, err := retry.Do[*gorm.DB](context.Background(), 10, retryStrategy, func() (*gorm.DB, error) {
-		gorm, err := gorm.Open(postgres.Open(dsn), &gormConfig)
-		if err != nil {
-			return nil, fmt.Errorf("failed to connect to database: %w", err)
-		}
-		return gorm, nil
-	})
+	gorm, err := gorm.Open(postgres.Open(dsn), &gormConfig)
+	if err != nil {
+		return nil, fmt.Errorf("failed to connect to database: %w", err)
+	}
 
 	if err != nil {
 		return nil, err

@@ -2,13 +2,13 @@ package database
 
 import (
 	"errors"
+	"ethereum-wallet/database/utils"
 	"math/big"
 
 	"github.com/google/uuid"
 	"gorm.io/gorm"
 
 	"github.com/ethereum/go-ethereum/common"
-	common2 "github.com/the-web3/eth-wallet/database/utils"
 )
 
 type Tokens struct {
@@ -39,7 +39,7 @@ func NewTokensDB(db *gorm.DB) TokensDB {
 }
 
 func (db *tokensDB) StoreTokens(headers []Tokens, blockLength uint64) error {
-	result := db.gorm.CreateInBatches(&headers, common2.BatchInsertSize)
+	result := db.gorm.CreateInBatches(&headers, utils.BatchInsertSize)
 	return result.Error
 }
 
