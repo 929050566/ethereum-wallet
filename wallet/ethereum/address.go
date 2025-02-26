@@ -1,4 +1,4 @@
-package address
+package ethereum
 
 import (
 	"crypto/ecdsa"

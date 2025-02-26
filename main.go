@@ -1,19 +1,19 @@
 package main
 
 import (
-	"ethereum-wallet/address"
+	"ethereum-wallet/wallet/ethereum"
 	"fmt"
 )
 
 func main() {
-	address1, err := address.CreateEthAddress()
+	address1, err := ethereum.CreateAddressByKeyPairs()
 	if err != nil {
 		fmt.Println("get address from privateKey error: ", err)
 		return
 	}
-	fmt.Println(address1.Private, address1.Address, address1.Address)
+	fmt.Println(address1.PrivateKey, address1.Address, address1.Address)
 
-	address2, err2 := address.PublicKeytoAddress("022505a03b55f896c0948f35a2c63b46f6a4cdb8221164bc27bb9980617dacbce7")
+	address2, err2 := ethereum.PublicKeyToAddress("022505a03b55f896c0948f35a2c63b46f6a4cdb8221164bc27bb9980617dacbce7")
 	if err2 != nil {
 		fmt.Println("get address from publicKey error: ", err)
 		return
